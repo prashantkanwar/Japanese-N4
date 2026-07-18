@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本語 N4 — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1b2a3b;
+    --paper: #f5f7fa;
+    --blue: #1565c0;
+    --sky: #4a90d9;
+    --gold: #e8a020;
+    --muted: #6b7280;
+    --card: #ffffff;
+    --border: #dde3ec;
+    --accent-bg: #eaf3fd;
+    --correct: #1e6b3e;
+    --wrong: #b91c1c;
+    --correct-bg: #d1fae5;
+    --wrong-bg: #fee2e2;
+    --tag-vocab: #e0f0ff;
+    --tag-vocab-text: #1565c0;
+    --tag-grammar: #fde8ff;
+    --tag-grammar-text: #7e22ce;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter','Noto Sans JP',sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--ink); display: flex; align-items: stretch; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.22); }
+  .nav-logo { font-family: 'Noto Serif JP',serif; font-size: 1.2rem; font-weight: 700; color: var(--gold); padding: 0 1.8rem; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+  .nav-logo span { color: rgba(255,255,255,0.45); font-size: 0.68rem; font-family: 'Inter',sans-serif; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; }
+  .nav-tabs { display: flex; flex: 1; }
+  .nav-tab { padding: 1.1rem 1.5rem; color: rgba(255,255,255,0.55); cursor: pointer; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 3px solid transparent; transition: all 0.18s; white-space: nowrap; }
+  .nav-tab:hover { color: #fff; }
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, var(--ink) 0%, #243b5a 100%); color: #fff; text-align: center; padding: 3.5rem 2rem 2.8rem; position: relative; overflow: hidden; }
+  .hero::before { content: 'N4'; font-family: 'Noto Serif JP',serif; font-size: clamp(8rem,22vw,18rem); font-weight: 700; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.04); pointer-events: none; }
+  .hero h1 { font-family: 'Noto Serif JP',serif; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 700; position: relative; }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero p { color: rgba(255,255,255,0.6); margin-top: 0.5rem; font-size: 0.92rem; position: relative; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; margin-top: 2rem; position: relative; }
+  .hero-stat .num { font-family: 'Noto Serif JP',serif; font-size: 2rem; color: var(--gold); font-weight: 700; }
+  .hero-stat .label { font-size: 0.7rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* SECTIONS */
+  .section { display: none; padding: 2.5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section-header { margin-bottom: 1.8rem; }
+  .section-header h2 { font-family: 'Noto Serif JP',serif; font-size: 1.55rem; font-weight: 700; color: var(--ink); }
+  .section-header p { color: var(--muted); font-size: 0.88rem; margin-top: 0.3rem; }
+
+  /* LESSON PICKER */
+  .lesson-picker { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .lesson-btn { padding: 0.42rem 1rem; border-radius: 20px; border: 2px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.78rem; font-weight: 500; color: var(--muted); transition: all 0.15s; }
+  .lesson-btn:hover { border-color: var(--sky); color: var(--ink); }
+  .lesson-btn.active { background: var(--ink); color: var(--gold); border-color: var(--ink); }
+
+  /* SEARCH */
+  .search-bar { width: 100%; padding: 0.65rem 1rem 0.65rem 2.6rem; border: 2px solid var(--border); border-radius: 10px; font-size: 0.88rem; background: var(--card); color: var(--ink); margin-bottom: 1.4rem; outline: none; transition: border-color 0.15s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 0.8rem center; }
+  .search-bar:focus { border-color: var(--sky); }
+
+  /* VOCAB CARDS */
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(285px,1fr)); gap: 1.1rem; }
+  .vocab-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.4rem; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden; }
+  .vocab-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--sky); border-radius: 4px 0 0 4px; }
+  .vocab-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.09); }
+  .vocab-card.hidden { display: none; }
+  .vocab-kanji { font-family: 'Noto Serif JP',serif; font-size: 1.75rem; font-weight: 700; color: var(--ink); }
+  .vocab-kana { color: var(--muted); font-size: 0.83rem; margin-top: 0.1rem; font-family: 'Noto Sans JP',sans-serif; }
+  .vocab-romaji { color: var(--sky); font-size: 0.73rem; font-weight: 500; letter-spacing: 0.04em; }
+  .vocab-type-badge { display: inline-block; font-size: 0.63rem; padding: 0.14rem 0.5rem; border-radius: 4px; background: var(--tag-vocab); color: var(--tag-vocab-text); font-weight: 600; margin-top: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .vocab-meaning { font-size: 0.97rem; font-weight: 600; color: var(--ink); margin-top: 0.45rem; }
+  .vocab-toggle { font-size: 0.72rem; color: var(--sky); margin-top: 0.55rem; cursor: pointer; font-weight: 500; user-select: none; }
+  .vocab-example { margin-top: 0.6rem; background: var(--accent-bg); border-radius: 8px; padding: 0.7rem; display: none; }
+  .vocab-example.show { display: block; }
+  .vocab-example .jp { font-family: 'Noto Sans JP',sans-serif; font-size: 0.83rem; color: var(--ink); line-height: 1.5; }
+  .vocab-example .kana { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+  .vocab-example .en { font-size: 0.76rem; color: var(--muted); margin-top: 0.25rem; font-style: italic; }
+  .no-results { grid-column: 1/-1; text-align: center; color: var(--muted); padding: 2rem; font-size: 0.9rem; }
+
+  /* GRAMMAR */
+  .grammar-grid { display: grid; gap: 1.1rem; }
+  .grammar-lesson-title { font-family: 'Noto Serif JP',serif; font-size: 1.05rem; font-weight: 700; margin: 1.6rem 0 0.9rem; color: var(--ink); border-left: 3px solid var(--sky); padding-left: 0.8rem; }
+  .grammar-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.3rem 1.5rem 1.3rem 4rem; position: relative; }
+  .grammar-num { position: absolute; left: 1.2rem; top: 1.3rem; font-family: 'Noto Serif JP',serif; font-size: 1.3rem; font-weight: 700; color: var(--sky); line-height: 1; }
+  .grammar-tag { display: inline-block; font-size: 0.62rem; padding: 0.14rem 0.5rem; border-radius: 4px; background: var(--tag-grammar); color: var(--tag-grammar-text); font-weight: 600; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .grammar-title { font-weight: 600; font-size: 0.97rem; color: var(--ink); }
+  .grammar-pattern { font-family: 'Noto Sans JP',sans-serif; background: var(--ink); color: var(--gold); display: inline-block; padding: 0.28rem 0.8rem; border-radius: 6px; font-size: 0.83rem; margin: 0.45rem 0; }
+  .grammar-meaning { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+  .grammar-explanation { font-size: 0.82rem; color: var(--ink); margin-top: 0.35rem; line-height: 1.65; }
+  .grammar-example { background: var(--accent-bg); border-radius: 8px; padding: 0.7rem; margin-top: 0.7rem; }
+  .grammar-example .jp { font-family: 'Noto Sans JP',sans-serif; font-size: 0.86rem; color: var(--ink); }
+  .grammar-example .kana { font-size: 0.73rem; color: var(--muted); margin-top: 0.15rem; }
+  .grammar-example .en { font-size: 0.76rem; color: var(--muted); margin-top: 0.22rem; font-style: italic; }
+
+  /* QUIZ */
+  .quiz-controls { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2rem; align-items: center; }
+  .quiz-type-btn { padding: 0.52rem 1.2rem; border-radius: 8px; border: 2px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.82rem; font-weight: 500; transition: all 0.15s; color: var(--ink); }
+  .quiz-type-btn.active { background: var(--ink); color: var(--gold); border-color: var(--ink); }
+  .quiz-start-btn { padding: 0.58rem 1.8rem; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: opacity 0.15s; margin-left: auto; }
+  .quiz-start-btn:hover { opacity: 0.88; }
+
+  .quiz-area { display: none; }
+  .quiz-area.show { display: block; }
+  .quiz-prog-wrap { margin-bottom: 0.4rem; }
+  .quiz-prog-bar { height: 5px; background: var(--border); border-radius: 3px; }
+  .quiz-prog-fill { height: 100%; background: linear-gradient(90deg,var(--sky),var(--gold)); border-radius: 3px; transition: width 0.35s; }
+  .quiz-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.4rem; display: flex; justify-content: space-between; }
+  .quiz-score-live { font-weight: 600; color: var(--ink); }
+
+  .quiz-q-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem 2.5rem; text-align: center; margin-bottom: 1.4rem; }
+  .quiz-q-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.7rem; }
+  .quiz-q-word { font-family: 'Noto Serif JP',serif; font-size: clamp(2rem,6vw,3rem); font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .quiz-q-sub { font-family: 'Noto Sans JP',sans-serif; color: var(--muted); margin-top: 0.4rem; font-size: 0.9rem; }
+  .quiz-badge { display: inline-block; background: var(--tag-vocab); color: var(--tag-vocab-text); font-size: 0.63rem; padding: 0.18rem 0.6rem; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.6rem; }
+  .quiz-badge.grammar { background: var(--tag-grammar); color: var(--tag-grammar-text); }
+
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .quiz-opt { padding: 1rem 1.1rem; border-radius: 10px; border: 2px solid var(--border); background: var(--card); font-size: 0.87rem; cursor: pointer; font-weight: 500; transition: all 0.14s; text-align: center; line-height: 1.45; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--sky); background: var(--accent-bg); }
+  .quiz-opt.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); font-weight: 600; }
+  .quiz-opt.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+  .quiz-opt:disabled { cursor: default; }
+
+  .quiz-feedback { text-align: center; margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 500; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: var(--correct-bg); color: var(--correct); }
+  .quiz-feedback.fail { background: var(--wrong-bg); color: var(--wrong); }
+
+  .quiz-next-btn { display: none; margin: 1rem auto 0; padding: 0.62rem 2rem; background: var(--ink); color: var(--gold); border: none; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+  .quiz-next-btn.show { display: block; }
+
+  .quiz-score-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; display: none; }
+  .quiz-score-card.show { display: block; }
+  .score-emoji { font-size: 3.8rem; }
+  .score-num { font-family: 'Noto Serif JP',serif; font-size: 3.2rem; font-weight: 700; color: var(--gold); margin: 0.5rem 0; }
+  .score-pct { color: var(--muted); font-size: 1rem; margin-bottom: 0.3rem; }
+  .score-msg { color: var(--muted); font-size: 0.85rem; }
+  .score-restart { margin-top: 1.8rem; padding: 0.7rem 2.2rem; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+
+  /* RESPONSIVE */
+  @media(max-width:600px){
+    .hero-stats { gap: 1.2rem; }
+    .quiz-options { grid-template-columns:1fr; }
+    .quiz-q-card { padding: 1.5rem 1rem; }
+    .nav-logo span { display:none; }
+    .grammar-card { padding-left: 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">N4 日本語<span>JLPT Study Guide</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showSection('vocab',this)">Vocabulary</div>
+    <div class="nav-tab" onclick="showSection('grammar',this)">Grammar</div>
+    <div class="nav-tab" onclick="showSection('quiz',this)">Quiz</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Japanese <em>N4</em> Study Guide</h1>
+  <p>100 vocabulary words · 50 grammar points · Interactive quizzes</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">100</div><div class="label">Words</div></div>
+    <div class="hero-stat"><div class="num">10</div><div class="label">Topics</div></div>
+    <div class="hero-stat"><div class="num">50</div><div class="label">Grammar</div></div>
+    <div class="hero-stat"><div class="num">10</div><div class="label">Lessons</div></div>
+  </div>
+</div>
+
+<!-- VOCAB -->
+<div class="section active" id="section-vocab">
+  <div class="section-header">
+    <h2>Vocabulary</h2>
+    <p>Click a card to reveal the example sentence. Filter by lesson or search below.</p>
+  </div>
+  <div class="lesson-picker" id="vocab-picker"></div>
+  <input class="search-bar" id="vocab-search" type="text" placeholder="Search words, meanings, romaji…" oninput="filterVocab()">
+  <div class="vocab-grid" id="vocab-grid"></div>
+</div>
+
+<!-- GRAMMAR -->
+<div class="section" id="section-grammar">
+  <div class="section-header">
+    <h2>Grammar Points</h2>
+    <p>50 N4 grammar patterns across 10 lessons.</p>
+  </div>
+  <div class="lesson-picker" id="grammar-picker"></div>
+  <div class="grammar-grid" id="grammar-grid"></div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="section-quiz">
+  <div class="section-header">
+    <h2>Quiz</h2>
+    <p>15 random questions — choose vocabulary or grammar, then start.</p>
+  </div>
+  <div class="quiz-controls">
+    <button class="quiz-type-btn active" id="qtype-vocab" onclick="setQuizType('vocab')">📚 Vocabulary</button>
+    <button class="quiz-type-btn" id="qtype-grammar" onclick="setQuizType('grammar')">📝 Grammar</button>
+    <button class="quiz-start-btn" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+  <div class="quiz-area" id="quiz-area">
+    <div class="quiz-prog-wrap">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quiz-prog"></div></div>
+    </div>
+    <div class="quiz-meta">
+      <span id="quiz-qnum">Question 1 of 15</span>
+      <span class="quiz-score-live" id="quiz-score-live">Score: 0</span>
+    </div>
+    <div class="quiz-q-card" id="quiz-q-card">
+      <div class="quiz-q-label" id="qlabel"></div>
+      <div class="quiz-q-word" id="qword"></div>
+      <div class="quiz-q-sub" id="qsub"></div>
+      <div class="quiz-badge" id="qbadge"></div>
+    </div>
+    <div class="quiz-options" id="quiz-options"></div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <button class="quiz-next-btn" id="quiz-next" onclick="nextQ()">Next →</button>
+    <div class="quiz-score-card" id="score-card">
+      <div class="score-emoji" id="score-emoji"></div>
+      <div class="score-num" id="score-num"></div>
+      <div class="score-pct" id="score-pct"></div>
+      <div class="score-msg" id="score-msg"></div>
+      <button class="score-restart" onclick="startQuiz()">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════ DATA ═══════════════════════════
+const vocabLessons = [
+  { title:"Daily Life", words:[
+    { k:"生活", kn:"せいかつ", r:"seikatsu", t:"Noun/Suru-verb", m:"life / daily living", ej:"日本での生活に少しずつ慣れてきました。", ekn:"にほんでのせいかつにすこしずつなれてきました。", ee:"I have gradually gotten used to life in Japan." },
+    { k:"習慣", kn:"しゅうかん", r:"shuukan", t:"Noun", m:"habit / custom", ej:"毎朝ジョギングをする習慣があります。", ekn:"まいあさジョギングをするしゅうかんがあります。", ee:"I have a habit of jogging every morning." },
+    { k:"準備", kn:"じゅんび", r:"junbi", t:"Noun/Suru-verb", m:"preparation", ej:"旅行の準備はもう終わりましたか。", ekn:"りょこうのじゅんびはもうおわりましたか。", ee:"Have you finished preparing for the trip?" },
+    { k:"片付ける", kn:"かたづける", r:"katazukeru", t:"Verb", m:"to tidy up / put away", ej:"食事のあとで、台所を片付けました。", ekn:"しょくじのあとで、だいどころをかたづけました。", ee:"I cleaned up the kitchen after the meal." },
+    { k:"掃除", kn:"そうじ", r:"souji", t:"Noun/Suru-verb", m:"cleaning", ej:"日曜日に部屋を掃除します。", ekn:"にちようびにへやをそうじします。", ee:"I clean my room on Sunday." },
+    { k:"洗濯", kn:"せんたく", r:"sentaku", t:"Noun/Suru-verb", m:"laundry / washing", ej:"雨の日は洗濯物がなかなか乾きません。", ekn:"あめのひはせんたくものがなかなかかわきません。", ee:"Laundry does not dry easily on rainy days." },
+    { k:"乾く", kn:"かわく", r:"kawaku", t:"Verb", m:"to dry", ej:"このシャツはすぐ乾きます。", ekn:"このシャツはすぐかわきます。", ee:"This shirt dries quickly." },
+    { k:"遅れる", kn:"おくれる", r:"okureru", t:"Verb", m:"to be late", ej:"電車が遅れて、授業に遅れました。", ekn:"でんしゃがおくれて、じゅぎょうにおくれました。", ee:"The train was delayed, so I was late for class." },
+    { k:"間に合う", kn:"まにあう", r:"maniau", t:"Verb", m:"to be in time", ej:"急げば、会議に間に合います。", ekn:"いそげば、かいぎにまにあいます。", ee:"If we hurry, we will be in time for the meeting." },
+    { k:"用事", kn:"ようじ", r:"youji", t:"Noun", m:"errand / thing to do", ej:"今日は用事があるので、早く帰ります。", ekn:"きょうはようじがあるので、はやくかえります。", ee:"I have something to do today, so I will go home early." },
+  ]},
+  { title:"School & Study", words:[
+    { k:"授業", kn:"じゅぎょう", r:"jugyou", t:"Noun", m:"class / lesson", ej:"今日の授業はとても分かりやすかったです。", ekn:"きょうのじゅぎょうはとてもわかりやすかったです。", ee:"Today's class was very easy to understand." },
+    { k:"予習", kn:"よしゅう", r:"yoshuu", t:"Noun/Suru-verb", m:"preparation for class", ej:"明日の漢字を予習しておきます。", ekn:"あしたのかんじをよしゅうしておきます。", ee:"I will prepare tomorrow's kanji in advance." },
+    { k:"復習", kn:"ふくしゅう", r:"fukushuu", t:"Noun/Suru-verb", m:"review", ej:"試験の前に文法を復習しました。", ekn:"しけんのまえにぶんぽうをふくしゅうしました。", ee:"I reviewed grammar before the exam." },
+    { k:"文法", kn:"ぶんぽう", r:"bunpou", t:"Noun", m:"grammar", ej:"この文法は少し難しいです。", ekn:"このぶんぽうはすこしむずかしいです。", ee:"This grammar is a little difficult." },
+    { k:"説明", kn:"せつめい", r:"setsumei", t:"Noun/Suru-verb", m:"explanation", ej:"先生がもう一度説明してくださいました。", ekn:"せんせいがもういちどせつめいしてくださいました。", ee:"The teacher explained it once again." },
+    { k:"間違える", kn:"まちがえる", r:"machigaeru", t:"Verb", m:"to make a mistake", ej:"漢字の読み方を間違えました。", ekn:"かんじのよみかたをまちがえました。", ee:"I made a mistake in the kanji reading." },
+    { k:"直す", kn:"なおす", r:"naosu", t:"Verb", m:"to correct / fix", ej:"作文の間違いを直しました。", ekn:"さくぶんのまちがいをなおしました。", ee:"I corrected the mistakes in my essay." },
+    { k:"答え", kn:"こたえ", r:"kotae", t:"Noun", m:"answer", ej:"この問題の答えが分かりません。", ekn:"このもんだいのこたえがわかりません。", ee:"I do not know the answer to this question." },
+    { k:"合格", kn:"ごうかく", r:"goukaku", t:"Noun/Suru-verb", m:"passing an exam", ej:"来年、N4に合格したいです。", ekn:"らいねん、エヌよんにごうかくしたいです。", ee:"I want to pass N4 next year." },
+    { k:"不合格", kn:"ふごうかく", r:"fugoukaku", t:"Noun", m:"failing an exam", ej:"不合格でも、あきらめないでください。", ekn:"ふごうかくでも、あきらめないでください。", ee:"Even if you fail, please do not give up." },
+  ]},
+  { title:"Work & Society", words:[
+    { k:"仕事", kn:"しごと", r:"shigoto", t:"Noun/Suru-verb", m:"work / job", ej:"仕事が忙しくて、昼ご飯を食べる時間がありません。", ekn:"しごとがいそがしくて、ひるごはんをたべるじかんがありません。", ee:"Work is busy, so I do not have time to eat lunch." },
+    { k:"会社員", kn:"かいしゃいん", r:"kaishain", t:"Noun", m:"company employee", ej:"兄は東京で会社員をしています。", ekn:"あにはとうきょうでかいしゃいんをしています。", ee:"My older brother works as a company employee in Tokyo." },
+    { k:"会議", kn:"かいぎ", r:"kaigi", t:"Noun", m:"meeting", ej:"午後三時から会議があります。", ekn:"ごごさんじからかいぎがあります。", ee:"There is a meeting from 3 p.m." },
+    { k:"資料", kn:"しりょう", r:"shiryou", t:"Noun", m:"materials / documents", ej:"会議の前に資料をコピーしてください。", ekn:"かいぎのまえにしりょうをコピーしてください。", ee:"Please copy the materials before the meeting." },
+    { k:"連絡", kn:"れんらく", r:"renraku", t:"Noun/Suru-verb", m:"contact / communication", ej:"予定が変わったら、すぐ連絡してください。", ekn:"よていがかわったら、すぐれんらくしてください。", ee:"If the plan changes, please contact me immediately." },
+    { k:"受付", kn:"うけつけ", r:"uketsuke", t:"Noun", m:"reception", ej:"受付で名前を書いてください。", ekn:"うけつけでなまえをかいてください。", ee:"Please write your name at reception." },
+    { k:"残業", kn:"ざんぎょう", r:"zangyou", t:"Noun/Suru-verb", m:"overtime work", ej:"昨日は二時間残業しました。", ekn:"きのうはにじかんざんぎょうしました。", ee:"I worked two hours of overtime yesterday." },
+    { k:"出張", kn:"しゅっちょう", r:"shucchou", t:"Noun/Suru-verb", m:"business trip", ej:"来週、大阪へ出張します。", ekn:"らいしゅう、おおさかへしゅっちょうします。", ee:"I will go on a business trip to Osaka next week." },
+    { k:"給料", kn:"きゅうりょう", r:"kyuuryou", t:"Noun", m:"salary", ej:"今月の給料で新しいパソコンを買います。", ekn:"こんげつのきゅうりょうであたらしいパソコンをかいます。", ee:"I will buy a new computer with this month's salary." },
+    { k:"面接", kn:"めんせつ", r:"mensetsu", t:"Noun/Suru-verb", m:"interview", ej:"明日、アルバイトの面接があります。", ekn:"あした、アルバイトのめんせつがあります。", ee:"I have a part-time job interview tomorrow." },
+  ]},
+  { title:"Transportation & Travel", words:[
+    { k:"乗り換える", kn:"のりかえる", r:"norikaeru", t:"Verb", m:"to transfer / change vehicles", ej:"新宿駅で電車を乗り換えます。", ekn:"しんじゅくえきででんしゃをのりかえます。", ee:"I transfer trains at Shinjuku Station." },
+    { k:"降りる", kn:"おりる", r:"oriru", t:"Verb", m:"to get off", ej:"次の駅で降りてください。", ekn:"つぎのえきでおりてください。", ee:"Please get off at the next station." },
+    { k:"出発", kn:"しゅっぱつ", r:"shuppatsu", t:"Noun/Suru-verb", m:"departure", ej:"バスは午前八時に出発します。", ekn:"バスはごぜんはちじにしゅっぱつします。", ee:"The bus departs at 8 a.m." },
+    { k:"到着", kn:"とうちゃく", r:"touchaku", t:"Noun/Suru-verb", m:"arrival", ej:"飛行機は夜九時に到着しました。", ekn:"ひこうきはよるくじにとうちゃくしました。", ee:"The airplane arrived at 9 p.m." },
+    { k:"空港", kn:"くうこう", r:"kuukou", t:"Noun", m:"airport", ej:"空港までタクシーで行きました。", ekn:"くうこうまでタクシーでいきました。", ee:"I went to the airport by taxi." },
+    { k:"港", kn:"みなと", r:"minato", t:"Noun", m:"harbor / port", ej:"港で大きな船を見ました。", ekn:"みなとでおおきなふねをみました。", ee:"I saw a large ship at the harbor." },
+    { k:"予約", kn:"よやく", r:"yoyaku", t:"Noun/Suru-verb", m:"reservation", ej:"ホテルを予約しておきました。", ekn:"ホテルをよやくしておきました。", ee:"I made a hotel reservation in advance." },
+    { k:"案内", kn:"あんない", r:"annai", t:"Noun/Suru-verb", m:"guidance / guide", ej:"駅まで案内しましょうか。", ekn:"えきまであんないしましょうか。", ee:"Shall I guide you to the station?" },
+    { k:"地図", kn:"ちず", r:"chizu", t:"Noun", m:"map", ej:"地図を見ながら歩きました。", ekn:"ちずをみながらあるきました。", ee:"I walked while looking at the map." },
+    { k:"交差点", kn:"こうさてん", r:"kousaten", t:"Noun", m:"intersection", ej:"次の交差点を右に曲がってください。", ekn:"つぎのこうさてんをみぎにまがってください。", ee:"Please turn right at the next intersection." },
+  ]},
+  { title:"Health & Body", words:[
+    { k:"健康", kn:"けんこう", r:"kenkou", t:"Noun/Na-adj", m:"health / healthy", ej:"健康のために毎日歩いています。", ekn:"けんこうのためにまいにちあるいています。", ee:"I walk every day for my health." },
+    { k:"病気", kn:"びょうき", r:"byouki", t:"Noun", m:"illness / sickness", ej:"病気で学校を休みました。", ekn:"びょうきでがっこうをやすみました。", ee:"I was absent from school because of illness." },
+    { k:"熱", kn:"ねつ", r:"netsu", t:"Noun", m:"fever", ej:"熱があるので、今日は休みます。", ekn:"ねつがあるので、きょうはやすみます。", ee:"I have a fever, so I will rest today." },
+    { k:"咳", kn:"せき", r:"seki", t:"Noun", m:"cough", ej:"昨日から咳が出ています。", ekn:"きのうからせきがでています。", ee:"I have had a cough since yesterday." },
+    { k:"薬", kn:"くすり", r:"kusuri", t:"Noun", m:"medicine", ej:"食事のあとで薬を飲んでください。", ekn:"しょくじのあとでくすりをのんでください。", ee:"Please take the medicine after meals." },
+    { k:"治る", kn:"なおる", r:"naoru", t:"Verb", m:"to recover / be cured", ej:"風邪はもう治りました。", ekn:"かぜはもうなおりました。", ee:"My cold has already gotten better." },
+    { k:"痛い", kn:"いたい", r:"itai", t:"I-adjective", m:"painful / hurts", ej:"朝から頭が痛いです。", ekn:"あさからあたまがいたいです。", ee:"My head has hurt since morning." },
+    { k:"疲れる", kn:"つかれる", r:"tsukareru", t:"Verb", m:"to get tired", ej:"長い時間歩いたので疲れました。", ekn:"ながいじかんあるいたのでつかれました。", ee:"I got tired because I walked for a long time." },
+    { k:"眠い", kn:"ねむい", r:"nemui", t:"I-adjective", m:"sleepy", ej:"昨日あまり寝なかったので、眠いです。", ekn:"きのうあまりねなかったので、ねむいです。", ee:"I am sleepy because I did not sleep much yesterday." },
+    { k:"医者", kn:"いしゃ", r:"isha", t:"Noun", m:"doctor", ej:"医者に診てもらったほうがいいです。", ekn:"いしゃにみてもらったほうがいいです。", ee:"You should have a doctor examine you." },
+  ]},
+  { title:"Feelings & Personality", words:[
+    { k:"気持ち", kn:"きもち", r:"kimochi", t:"Noun", m:"feeling", ej:"きれいな景色を見ると、気持ちがよくなります。", ekn:"きれいなけしきをみると、きもちがよくなります。", ee:"When I see beautiful scenery, I feel good." },
+    { k:"嬉しい", kn:"うれしい", r:"ureshii", t:"I-adjective", m:"happy / glad", ej:"友だちから手紙をもらって嬉しかったです。", ekn:"ともだちからてがみをもらってうれしかったです。", ee:"I was happy to receive a letter from my friend." },
+    { k:"悲しい", kn:"かなしい", r:"kanashii", t:"I-adjective", m:"sad", ej:"映画の最後が悲しかったです。", ekn:"えいがのさいごがかなしかったです。", ee:"The ending of the movie was sad." },
+    { k:"寂しい", kn:"さびしい", r:"sabishii", t:"I-adjective", m:"lonely", ej:"一人で住んでいるので、時々寂しくなります。", ekn:"ひとりですんでいるので、ときどきさびしくなります。", ee:"Because I live alone, I sometimes feel lonely." },
+    { k:"心配", kn:"しんぱい", r:"shinpai", t:"Noun/Na-adj/Suru-verb", m:"worry / concern", ej:"母は私の体を心配しています。", ekn:"はははわたしのからだをしんぱいしています。", ee:"My mother is worried about my health." },
+    { k:"安心", kn:"あんしん", r:"anshin", t:"Noun/Suru-verb", m:"relief / peace of mind", ej:"無事だと聞いて安心しました。", ekn:"ぶじだときいてあんしんしました。", ee:"I was relieved to hear that they were safe." },
+    { k:"親切", kn:"しんせつ", r:"shinsetsu", t:"Noun/Na-adj", m:"kindness / kind", ej:"駅員さんはとても親切でした。", ekn:"えきいんさんはとてもしんせつでした。", ee:"The station staff was very kind." },
+    { k:"真面目", kn:"まじめ", r:"majime", t:"Na-adjective", m:"serious / diligent", ej:"彼は真面目に日本語を勉強しています。", ekn:"かれはまじめににほんごをべんきょうしています。", ee:"He studies Japanese seriously." },
+    { k:"恥ずかしい", kn:"はずかしい", r:"hazukashii", t:"I-adjective", m:"embarrassed / shy", ej:"みんなの前で話すのは恥ずかしいです。", ekn:"みんなのまえではなすのははずかしいです。", ee:"It is embarrassing to speak in front of everyone." },
+    { k:"残念", kn:"ざんねん", r:"zannen", t:"Noun/Na-adj", m:"unfortunate / disappointing", ej:"雨で試合が中止になって残念です。", ekn:"あめでしあいがちゅうしになってざんねんです。", ee:"It is disappointing that the game was canceled because of rain." },
+  ]},
+  { title:"Nature & Weather", words:[
+    { k:"自然", kn:"しぜん", r:"shizen", t:"Noun", m:"nature", ej:"この町は自然が多くて、空気がきれいです。", ekn:"このまちはしぜんがおおくて、くうきがきれいです。", ee:"This town has a lot of nature, and the air is clean." },
+    { k:"景色", kn:"けしき", r:"keshiki", t:"Noun", m:"scenery / view", ej:"山の上から見た景色はすばらしかったです。", ekn:"やまのうえからみたけしきはすばらしかったです。", ee:"The view from the top of the mountain was wonderful." },
+    { k:"空気", kn:"くうき", r:"kuuki", t:"Noun", m:"air", ej:"朝の空気はとても気持ちがいいです。", ekn:"あさのくうきはとてもきもちがいいです。", ee:"The morning air feels very pleasant." },
+    { k:"雲", kn:"くも", r:"kumo", t:"Noun", m:"cloud", ej:"今日は雲が多いですね。", ekn:"きょうはくもがおおいですね。", ee:"There are many clouds today, aren't there?" },
+    { k:"風", kn:"かぜ", r:"kaze", t:"Noun", m:"wind", ej:"今日は風が強いです。", ekn:"きょうはかぜがつよいです。", ee:"The wind is strong today." },
+    { k:"台風", kn:"たいふう", r:"taifuu", t:"Noun", m:"typhoon", ej:"台風のため、電車が止まりました。", ekn:"たいふうのため、でんしゃがとまりました。", ee:"The train stopped because of the typhoon." },
+    { k:"地震", kn:"じしん", r:"jishin", t:"Noun", m:"earthquake", ej:"昨日の夜、大きな地震がありました。", ekn:"きのうのよる、おおきなじしんがありました。", ee:"There was a large earthquake last night." },
+    { k:"晴れる", kn:"はれる", r:"hareru", t:"Verb", m:"to clear up / become sunny", ej:"明日は晴れると思います。", ekn:"あしたははれるとおもいます。", ee:"I think it will be sunny tomorrow." },
+    { k:"曇る", kn:"くもる", r:"kumoru", t:"Verb", m:"to become cloudy", ej:"午後から曇ってきました。", ekn:"ごごからくもってきました。", ee:"It became cloudy from the afternoon." },
+    { k:"気温", kn:"きおん", r:"kion", t:"Noun", m:"air temperature", ej:"今日は気温が三十度まで上がります。", ekn:"きょうはきおんがさんじゅうどまであがります。", ee:"Today the temperature will rise to 30 degrees." },
+  ]},
+  { title:"Shopping & Money", words:[
+    { k:"値段", kn:"ねだん", r:"nedan", t:"Noun", m:"price", ej:"このかばんの値段はいくらですか。", ekn:"このかばんのねだんはいくらですか。", ee:"How much is this bag?" },
+    { k:"売り場", kn:"うりば", r:"uriba", t:"Noun", m:"sales floor / department", ej:"靴の売り場は三階にあります。", ekn:"くつのうりばはさんがいにあります。", ee:"The shoe department is on the third floor." },
+    { k:"商品", kn:"しょうひん", r:"shouhin", t:"Noun", m:"product / goods", ej:"この店には新しい商品がたくさんあります。", ekn:"このみせにはあたらしいしょうひんがたくさんあります。", ee:"This store has many new products." },
+    { k:"現金", kn:"げんきん", r:"genkin", t:"Noun", m:"cash", ej:"この店では現金しか使えません。", ekn:"このみせではげんきんしかつかえません。", ee:"You can only use cash at this store." },
+    { k:"払う", kn:"はらう", r:"harau", t:"Verb", m:"to pay", ej:"レジでお金を払いました。", ekn:"レジでおかねをはらいました。", ee:"I paid money at the register." },
+    { k:"お釣り", kn:"おつり", r:"otsuri", t:"Noun", m:"change", ej:"お釣りを忘れないでください。", ekn:"おつりをわすれないでください。", ee:"Please do not forget your change." },
+    { k:"選ぶ", kn:"えらぶ", r:"erabu", t:"Verb", m:"to choose", ej:"母へのプレゼントを選んでいます。", ekn:"ははへのプレゼントをえらんでいます。", ee:"I am choosing a present for my mother." },
+    { k:"包む", kn:"つつむ", r:"tsutsumu", t:"Verb", m:"to wrap", ej:"プレゼントをきれいに包んでもらいました。", ekn:"プレゼントをきれいにつつんでもらいました。", ee:"I had the present wrapped nicely." },
+    { k:"足りる", kn:"たりる", r:"tariru", t:"Verb", m:"to be enough", ej:"お金が足りなくて、服が買えませんでした。", ekn:"おかねがたりなくて、ふくがかえませんでした。", ee:"I could not buy the clothes because I did not have enough money." },
+    { k:"割引", kn:"わりびき", r:"waribiki", t:"Noun/Suru-verb", m:"discount", ej:"学生は入場料が割引になります。", ekn:"がくせいはにゅうじょうりょうがわりびきになります。", ee:"Students get a discount on the entrance fee." },
+  ]},
+  { title:"Relationships & Conversation", words:[
+    { k:"相談", kn:"そうだん", r:"soudan", t:"Noun/Suru-verb", m:"consultation", ej:"進学について先生に相談しました。", ekn:"しんがくについてせんせいにそうだんしました。", ee:"I consulted my teacher about going on to higher education." },
+    { k:"約束", kn:"やくそく", r:"yakusoku", t:"Noun/Suru-verb", m:"promise / appointment", ej:"友だちと映画を見る約束をしました。", ekn:"ともだちとえいがをみるやくそくをしました。", ee:"I made plans with my friend to watch a movie." },
+    { k:"招待", kn:"しょうたい", r:"shoutai", t:"Noun/Suru-verb", m:"invitation", ej:"友だちを誕生日パーティーに招待しました。", ekn:"ともだちをたんじょうびパーティーにしょうたいしました。", ee:"I invited my friend to my birthday party." },
+    { k:"紹介", kn:"しょうかい", r:"shoukai", t:"Noun/Suru-verb", m:"introduction", ej:"新しい友だちを家族に紹介しました。", ekn:"あたらしいともだちをかぞくにしょうかいしました。", ee:"I introduced my new friend to my family." },
+    { k:"返事", kn:"へんじ", r:"henji", t:"Noun/Suru-verb", m:"reply / response", ej:"メールの返事をまだもらっていません。", ekn:"メールのへんじをまだもらっていません。", ee:"I have not received a reply to my email yet." },
+    { k:"頼む", kn:"たのむ", r:"tanomu", t:"Verb", m:"to ask / request", ej:"友だちに宿題を見せてくれるよう頼みました。", ekn:"ともだちにしゅくだいをみせてくれるようたのみました。", ee:"I asked my friend to show me the homework." },
+    { k:"断る", kn:"ことわる", r:"kotowaru", t:"Verb", m:"to refuse / decline", ej:"忙しかったので、友だちの誘いを断りました。", ekn:"いそがしかったので、ともだちのさそいをことわりました。", ee:"I declined my friend's invitation because I was busy." },
+    { k:"伝える", kn:"つたえる", r:"tsutaeru", t:"Verb", m:"to tell / convey", ej:"先生に会議の時間を伝えてください。", ekn:"せんせいにかいぎのじかんをつたえてください。", ee:"Please tell the teacher the meeting time." },
+    { k:"謝る", kn:"あやまる", r:"ayamaru", t:"Verb", m:"to apologize", ej:"遅れたので、友だちに謝りました。", ekn:"おくれたので、ともだちにあやまりました。", ee:"I apologized to my friend because I was late." },
+    { k:"褒める", kn:"ほめる", r:"homeru", t:"Verb", m:"to praise", ej:"先生は私の作文を褒めてくださいました。", ekn:"せんせいはわたしのさくぶんをほめてくださいました。", ee:"The teacher praised my essay." },
+  ]},
+  { title:"Useful Adverbs & Expressions", words:[
+    { k:"必ず", kn:"かならず", r:"kanarazu", t:"Adverb", m:"certainly / without fail", ej:"出かける前に必ず電気を消してください。", ekn:"でかけるまえにかならずでんきをけしてください。", ee:"Please be sure to turn off the lights before going out." },
+    { k:"なるべく", kn:"なるべく", r:"narubeku", t:"Adverb", m:"as much as possible", ej:"なるべく早く返事をください。", ekn:"なるべくはやくへんじをください。", ee:"Please reply as soon as possible." },
+    { k:"だんだん", kn:"だんだん", r:"dandan", t:"Adverb", m:"gradually", ej:"日本語がだんだん分かるようになりました。", ekn:"にほんごがだんだんわかるようになりました。", ee:"I gradually became able to understand Japanese." },
+    { k:"ほとんど", kn:"ほとんど", r:"hotondo", t:"Adverb/Noun", m:"almost / mostly", ej:"宿題はほとんど終わりました。", ekn:"しゅくだいはほとんどおわりました。", ee:"I have almost finished my homework." },
+    { k:"はっきり", kn:"はっきり", r:"hakkiri", t:"Adverb/Suru-verb", m:"clearly", ej:"もっとはっきり話してください。", ekn:"もっとはっきりはなしてください。", ee:"Please speak more clearly." },
+    { k:"しっかり", kn:"しっかり", r:"shikkari", t:"Adverb", m:"firmly / properly", ej:"試験の前にしっかり勉強しましょう。", ekn:"しけんのまえにしっかりべんきょうしましょう。", ee:"Let's study properly before the exam." },
+    { k:"できるだけ", kn:"できるだけ", r:"dekiru dake", t:"Expression", m:"as much as possible", ej:"できるだけ日本語で話してください。", ekn:"できるだけにほんごではなしてください。", ee:"Please speak in Japanese as much as possible." },
+    { k:"たぶん", kn:"たぶん", r:"tabun", t:"Adverb", m:"probably / maybe", ej:"明日はたぶん雨でしょう。", ekn:"あしたはたぶんあめでしょう。", ee:"It will probably rain tomorrow." },
+    { k:"もし", kn:"もし", r:"moshi", t:"Adverb", m:"if", ej:"もし時間があったら、手伝ってください。", ekn:"もしじかんがあったら、てつだってください。", ee:"If you have time, please help me." },
+    { k:"例えば", kn:"たとえば", r:"tatoeba", t:"Adverb", m:"for example", ej:"日本料理、例えばすしや天ぷらが好きです。", ekn:"にほんりょうり、たとえばすしやてんぷらがすきです。", ee:"I like Japanese food, for example sushi and tempura." },
+  ]},
+];
+
+const grammarLessons = [
+  { title:"Experience & States", points:[
+    { n:"01", title:"Have done before", pat:"Verb た-form + ことがあります", m:"have done something before", exp:"Used to express past experience. It can be used even if the experience happened only once.", ej:"日本へ行ったことがあります。", ekn:"にほんへいったことがあります。", ee:"I have been to Japan before." },
+    { n:"02", title:"Resulting state", pat:"Verb て-form + います", m:"is in the state of having done something", exp:"Used to show that the result of an action still continues now.", ej:"ドアが開いています。", ekn:"ドアがあいています。", ee:"The door is open." },
+    { n:"03", title:"Something has been done intentionally", pat:"Transitive Verb て-form + あります", m:"has been done / is done in preparation", exp:"Used when someone intentionally did something and the result remains.", ej:"机の上に名前が書いてあります。", ekn:"つくえのうえになまえがかいてあります。", ee:"A name has been written on the desk." },
+    { n:"04", title:"Become", pat:"い-adj くなります / な-adj になります / Noun になります", m:"become ...", exp:"Used to express a change in condition, state, or role.", ej:"日本語が上手になりました。", ekn:"にほんごがじょうずになりました。", ee:"My Japanese became good." },
+    { n:"05", title:"Make something become", pat:"い-adj くします / な-adj にします / Noun にします", m:"make something ... / choose ...", exp:"Used when someone changes the state of something or makes a choice.", ej:"部屋をきれいにします。", ekn:"へやをきれいにします。", ee:"I will make the room clean." },
+  ]},
+  { title:"Ability & Possibility", points:[
+    { n:"01", title:"Potential form", pat:"Verb potential form", m:"can do ...", exp:"Used to express ability or possibility depending on the situation.", ej:"漢字が読めます。", ekn:"かんじがよめます。", ee:"I can read kanji." },
+    { n:"02", title:"Can do V", pat:"Verb dictionary form + ことができます", m:"can do ...", exp:"Used to politely express that someone can do something, similar to the potential form.", ej:"日本語で手紙を書くことができます。", ekn:"にほんごでてがみをかくことができます。", ee:"I can write letters in Japanese." },
+    { n:"03", title:"Can do N / N is completed", pat:"Noun が できます", m:"can do ... / be completed", exp:"Used for skills such as sports, languages, and cooking, or to say something is completed.", ej:"妹は料理ができます。", ekn:"いもうとはりょうりができます。", ee:"My younger sister can cook." },
+    { n:"04", title:"Easy to do V", pat:"Verb stem + やすいです", m:"easy to do ...", exp:"Used to say that an action is easy to do.", ej:"この本は読みやすいです。", ekn:"このほんはよみやすいです。", ee:"This book is easy to read." },
+    { n:"05", title:"Difficult to do V", pat:"Verb stem + にくいです", m:"difficult to do ...", exp:"Used to say that an action is difficult to do.", ej:"この漢字は書きにくいです。", ekn:"このかんじはかきにくいです。", ee:"This kanji is difficult to write." },
+  ]},
+  { title:"Opinions & Explanations", points:[
+    { n:"01", title:"I think that", pat:"Plain form + と思います", m:"I think that ...", exp:"Used to politely express your thoughts or opinions.", ej:"明日は雨が降ると思います。", ekn:"あしたはあめがふるとおもいます。", ee:"I think it will rain tomorrow." },
+    { n:"02", title:"Say that", pat:"Plain form + と言います", m:"say that ...", exp:"Used to quote or report what someone says.", ej:"先生は明日テストがあると言いました。", ekn:"せんせいはあしたテストがあるといいました。", ee:"The teacher said that there is a test tomorrow." },
+    { n:"03", title:"Explanatory のです / んです", pat:"Plain form + んです", m:"it is that ... / the reason is ...", exp:"Used to explain a reason or situation, or to ask for an explanation.", ej:"頭が痛いんです。", ekn:"あたまがいたいんです。", ee:"The thing is, I have a headache." },
+    { n:"04", title:"Because / since", pat:"Plain form + ので", m:"because / since ...", exp:"Used to give a reason in a polite and softer way. It is a little more polite than から.", ej:"雨が降っているので、出かけません。", ekn:"あめがふっているので、でかけません。", ee:"Since it is raining, I will not go out." },
+    { n:"05", title:"Might / may", pat:"Plain form + かもしれません", m:"might / may ...", exp:"Used when something is possible but not certain.", ej:"明日は寒いかもしれません。", ekn:"あしたはさむいかもしれません。", ee:"It might be cold tomorrow." },
+  ]},
+  { title:"Plans & Intentions", points:[
+    { n:"01", title:"Plan to do V", pat:"Verb dictionary form + つもりです", m:"intend to do ... / plan to do ...", exp:"Used to express your intention or plan.", ej:"来年、日本へ行くつもりです。", ekn:"らいねん、にほんへいくつもりです。", ee:"I plan to go to Japan next year." },
+    { n:"02", title:"Plan not to do V", pat:"Verb ない-form + つもりです", m:"intend not to do ...", exp:"Used to express an intention or plan not to do something.", ej:"今日はテレビを見ないつもりです。", ekn:"きょうはテレビをみないつもりです。", ee:"I plan not to watch TV today." },
+    { n:"03", title:"Scheduled to do V", pat:"Verb dictionary form + 予定です", m:"be scheduled to do ...", exp:"Used to express a schedule or plan that has already been decided.", ej:"土曜日に友だちに会う予定です。", ekn:"どようびにともだちにあうよていです。", ee:"I am scheduled to meet my friend on Saturday." },
+    { n:"04", title:"Do in advance", pat:"Verb て-form + おきます", m:"do something in advance", exp:"Used when doing something as preparation for later.", ej:"旅行の前にホテルを予約しておきます。", ekn:"りょこうのまえにホテルをよやくしておきます。", ee:"I will reserve a hotel before the trip." },
+    { n:"05", title:"About to do V", pat:"Verb dictionary form + ところです", m:"be about to do ...", exp:"Used to say that someone is just about to start doing something.", ej:"今から昼ご飯を食べるところです。", ekn:"いまからひるごはんをたべるところです。", ee:"I am about to eat lunch now." },
+  ]},
+  { title:"Obligation & Permission", points:[
+    { n:"01", title:"Must do V", pat:"Verb ない-form + ければなりません", m:"must do ... / have to do ...", exp:"Used to politely express obligation or necessity.", ej:"毎日、宿題をしなければなりません。", ekn:"まいにち、しゅくだいをしなければなりません。", ee:"I must do homework every day." },
+    { n:"02", title:"Do not have to do V", pat:"Verb ない-form + くてもいいです", m:"do not have to do ...", exp:"Used to say that it is not necessary to do something.", ej:"今日は学校へ行かなくてもいいです。", ekn:"きょうはがっこうへいかなくてもいいです。", ee:"I do not have to go to school today." },
+    { n:"03", title:"Must not do V", pat:"Verb て-form + はいけません", m:"must not do ...", exp:"Used to express prohibition. It is common in rules and warnings.", ej:"ここで写真を撮ってはいけません。", ekn:"ここでしゃしんをとってはいけません。", ee:"You must not take photos here." },
+    { n:"04", title:"May I do V?", pat:"Verb て-form + もいいですか", m:"May I do ...?", exp:"Used to ask for permission.", ej:"この辞書を使ってもいいですか。", ekn:"このじしょをつかってもいいですか。", ee:"May I use this dictionary?" },
+    { n:"05", title:"Please do not do V", pat:"Verb ない-form + でください", m:"please do not do ...", exp:"Used to ask someone not to do something.", ej:"ここに車を止めないでください。", ekn:"ここにくるまをとめないでください。", ee:"Please do not park your car here." },
+  ]},
+  { title:"Comparison & Choice", points:[
+    { n:"01", title:"A is more ... than B", pat:"A は B より Adjective です", m:"A is more ... than B", exp:"Used to compare two things or people and say A has a higher degree of something than B.", ej:"電車はバスより速いです。", ekn:"でんしゃはバスよりはやいです。", ee:"Trains are faster than buses." },
+    { n:"02", title:"Which is more ... A or B?", pat:"A と B と どちらが Adjective ですか", m:"Which is more ..., A or B?", exp:"Used to ask a comparison question between two things or people.", ej:"日本語と英語とどちらが難しいですか。", ekn:"にほんごとえいごとどちらがむずかしいですか。", ee:"Which is more difficult, Japanese or English?" },
+    { n:"03", title:"... is more ...", pat:"Noun のほうが Adjective です", m:"... is more ...", exp:"Used to answer comparison questions and say which one has a higher degree.", ej:"日本語のほうが難しいです。", ekn:"にほんごのほうがむずかしいです。", ee:"Japanese is more difficult." },
+    { n:"04", title:"The most ... among ...", pat:"Group の中で Noun が 一番 Adjective です", m:"the most ... among ...", exp:"Used to say which one is the most among three or more items.", ej:"季節の中で春が一番好きです。", ekn:"きせつのなかではるがいちばんすきです。", ee:"Among the seasons, I like spring the most." },
+    { n:"05", title:"Choose ...", pat:"Noun にします", m:"I will choose ...", exp:"Used when choosing one thing from several options.", ej:"昼ご飯はラーメンにします。", ekn:"ひるごはんはラーメンにします。", ee:"I will choose ramen for lunch." },
+  ]},
+  { title:"Conditions & Hypotheticals", points:[
+    { n:"01", title:"If / when", pat:"Plain past form + ら", m:"if / when ...", exp:"Used for conditions or for saying what happens after something is completed.", ej:"雨が降ったら、家にいます。", ekn:"あめがふったら、いえにいます。", ee:"If it rains, I will stay home." },
+    { n:"02", title:"If", pat:"Conditional ば-form", m:"if ...", exp:"Used to express conditions, often general conditions or natural results.", ej:"安ければ、買います。", ekn:"やすければ、かいます。", ee:"If it is cheap, I will buy it." },
+    { n:"03", title:"If it is / as for", pat:"Noun / Plain form + なら", m:"if it is ... / as for ...", exp:"Often used when responding to a topic and giving a condition or advice.", ej:"日本へ行くなら、京都がいいですよ。", ekn:"にほんへいくなら、きょうとがいいですよ。", ee:"If you are going to Japan, Kyoto is good." },
+    { n:"04", title:"Even if", pat:"Verb て-form + も / Adjective ても", m:"even if ...", exp:"Used to show that the result does not change even under a condition.", ej:"雨が降っても、行きます。", ekn:"あめがふっても、いきます。", ee:"Even if it rains, I will go." },
+    { n:"05", title:"When / if naturally", pat:"Plain non-past form + と", m:"when / if ... then naturally ...", exp:"Used for instructions, directions, and natural or automatic results.", ej:"このボタンを押すと、ドアが開きます。", ekn:"このボタンをおすと、ドアがあきます。", ee:"When you press this button, the door opens." },
+  ]},
+  { title:"Reasons & Contrast", points:[
+    { n:"01", title:"Although / even though", pat:"Plain form + のに", m:"although / even though ...", exp:"Used when the result is different from expectation, often with disappointment or surprise.", ej:"たくさん勉強したのに、試験は難しかったです。", ekn:"たくさんべんきょうしたのに、しけんはむずかしかったです。", ee:"Even though I studied a lot, the exam was difficult." },
+    { n:"02", title:"But / although", pat:"Plain form + けれども / けど", m:"but / although ...", exp:"Used to connect two sentences and express contrast or introduce background information.", ej:"この店は高いけど、おいしいです。", ekn:"このみせはたかいけど、おいしいです。", ee:"This restaurant is expensive, but delicious." },
+    { n:"03", title:"And also / listing reasons", pat:"Plain form + し、Plain form + し", m:"and also / because ... and ...", exp:"Used to list multiple reasons or characteristics.", ej:"この町は静かだし、きれいだし、住みやすいです。", ekn:"このまちはしずかだし、きれいだし、すみやすいです。", ee:"This town is quiet, clean, and easy to live in." },
+    { n:"04", title:"Because of / due to", pat:"Plain form + ために / Noun のために", m:"because of / due to ...", exp:"Used to express reason or cause in a slightly formal way.", ej:"雪のために、電車が遅れました。", ekn:"ゆきのために、でんしゃがおくれました。", ee:"Because of the snow, the train was delayed." },
+    { n:"05", title:"Should / expected to", pat:"Plain form + はずです", m:"should be / be expected to ...", exp:"Used when you expect something to be true based on reason or information.", ej:"田中さんはもう家に着いたはずです。", ekn:"たなかさんはもういえについたはずです。", ee:"Tanaka should have arrived home by now." },
+  ]},
+  { title:"Hearsay & Appearance", points:[
+    { n:"01", title:"Looks / seems (visual)", pat:"Verb stem + そうです / Adjective stem + そうです", m:"looks / seems ...", exp:"Used to describe how something looks or seems based on appearance.", ej:"このケーキはおいしそうです。", ekn:"このケーキはおいしそうです。", ee:"This cake looks delicious." },
+    { n:"02", title:"I heard that", pat:"Plain form + そうです", m:"I heard that ... / it is said that ...", exp:"Used to report information heard from another person, news, or another source.", ej:"明日は雨が降るそうです。", ekn:"あしたはあめがふるそうです。", ee:"I heard that it will rain tomorrow." },
+    { n:"03", title:"It seems that", pat:"Plain form + ようです / Noun のようです", m:"it seems that ...", exp:"Used to make a judgment based on what you see, hear, or know.", ej:"田中さんは忙しいようです。", ekn:"たなかさんはいそがしいようです。", ee:"It seems that Tanaka is busy." },
+    { n:"04", title:"Looks like / seems like", pat:"Plain form + みたいです / Noun みたいです", m:"looks like / seems like ...", exp:"Similar to ようです, but more common in casual conversation.", ej:"外は寒いみたいです。", ekn:"そとはさむいみたいです。", ee:"It seems cold outside." },
+    { n:"05", title:"Apparently / I hear that", pat:"Plain form + らしいです", m:"apparently / I hear that ...", exp:"Used to express something based on what you heard or inferred from a situation.", ej:"新しい先生はやさしいらしいです。", ekn:"あたらしいせんせいはやさしいらしいです。", ee:"I hear that the new teacher is kind." },
+  ]},
+  { title:"Purpose & Sequence", points:[
+    { n:"01", title:"In order to do V", pat:"Verb dictionary form + ために", m:"in order to do ...", exp:"Used to express purpose. It is often used with intentional actions.", ej:"日本で働くために、日本語を勉強しています。", ekn:"にほんではたらくために、にほんごをべんきょうしています。", ee:"I am studying Japanese in order to work in Japan." },
+    { n:"02", title:"Go to do V", pat:"Verb stem + に 行きます", m:"go to do ...", exp:"Used to show the purpose of movement. It is used with verbs like go, come, and return.", ej:"図書館へ本を借りに行きます。", ekn:"としょかんへほんをかりにいきます。", ee:"I will go to the library to borrow books." },
+    { n:"03", title:"While doing V", pat:"Verb stem + ながら", m:"while doing ...", exp:"Used when doing two actions at the same time. The main action is in the second clause.", ej:"音楽を聞きながら、勉強します。", ekn:"おんがくをききながら、べんきょうします。", ee:"I study while listening to music." },
+    { n:"04", title:"After doing V", pat:"Verb て-form + から", m:"after doing ...", exp:"Used to show that one action happens after another action is completed.", ej:"宿題をしてから、テレビを見ます。", ekn:"しゅくだいをしてから、テレビをみます。", ee:"I will watch TV after doing my homework." },
+    { n:"05", title:"Do things like V and V", pat:"Verb たり + Verb たり + します", m:"do things such as ... and ...", exp:"Used to list several actions as examples. You do not need to list everything.", ej:"休みの日は本を読んだり、映画を見たりします。", ekn:"やすみのひはほんをよんだり、えいがをみたりします。", ee:"On days off, I do things like read books and watch movies." },
+  ]},
+];
+
+// ═══════════════════════════ STATE ═══════════════════════════
+let currentVLesson = -1;
+let currentGLesson = -1;
+let quizType = 'vocab';
+let qList = [], qIdx = 0, qScore = 0, qAnswered = false;
+
+// ═══════════════════════════ NAV ═══════════════════════════
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ═══════════════════════════ VOCAB ═══════════════════════════
+function buildVocabPicker() {
+  const p = document.getElementById('vocab-picker');
+  const allBtn = mkBtn('All', true, () => { currentVLesson = -1; renderVocab(); setActiveBtn(p, allBtn); });
+  p.appendChild(allBtn);
+  vocabLessons.forEach((l, i) => {
+    const b = mkBtn(`L${i+1}: ${l.title}`, false, () => { currentVLesson = i; renderVocab(); setActiveBtn(p, b); });
+    p.appendChild(b);
+  });
+}
+
+function renderVocab() {
+  document.getElementById('vocab-search').value = '';
+  const grid = document.getElementById('vocab-grid');
+  const lessons = currentVLesson === -1 ? vocabLessons : [vocabLessons[currentVLesson]];
+  grid.innerHTML = '';
+  lessons.forEach(lesson => lesson.words.forEach(w => grid.appendChild(makeVocabCard(w))));
+}
+
+function makeVocabCard(w) {
+  const card = document.createElement('div');
+  card.className = 'vocab-card';
+  card.dataset.search = [w.k, w.kn, w.r, w.m].join(' ').toLowerCase();
+  card.innerHTML = `
+    <div class="vocab-kanji">${w.k}</div>
+    <div class="vocab-kana">${w.kn}</div>
+    <div class="vocab-romaji">${w.r}</div>
+    <div class="vocab-type-badge">${w.t}</div>
+    <div class="vocab-meaning">${w.m}</div>
+    <div class="vocab-toggle" onclick="toggleEx(this)">▸ Show example</div>
+    <div class="vocab-example">
+      <div class="jp">${w.ej}</div>
+      <div class="kana">${w.ekn}</div>
+      <div class="en">${w.ee}</div>
+    </div>`;
+  return card;
+}
+
+function toggleEx(el) {
+  const ex = el.nextElementSibling;
+  ex.classList.toggle('show');
+  el.textContent = ex.classList.contains('show') ? '▾ Hide example' : '▸ Show example';
+}
+
+function filterVocab() {
+  const q = document.getElementById('vocab-search').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('#vocab-grid .vocab-card');
+  let visible = 0;
+  cards.forEach(c => {
+    const match = !q || c.dataset.search.includes(q);
+    c.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  let nr = document.querySelector('#vocab-grid .no-results');
+  if (!visible) {
+    if (!nr) { nr = document.createElement('div'); nr.className = 'no-results'; document.getElementById('vocab-grid').appendChild(nr); }
+    nr.textContent = `No words found for "${q}"`;
+  } else if (nr) nr.remove();
+}
+
+// ═══════════════════════════ GRAMMAR ═══════════════════════════
+function buildGrammarPicker() {
+  const p = document.getElementById('grammar-picker');
+  const allBtn = mkBtn('All', true, () => { currentGLesson = -1; renderGrammar(); setActiveBtn(p, allBtn); });
+  p.appendChild(allBtn);
+  grammarLessons.forEach((l, i) => {
+    const b = mkBtn(`L${i+1}: ${l.title}`, false, () => { currentGLesson = i; renderGrammar(); setActiveBtn(p, b); });
+    p.appendChild(b);
+  });
+}
+
+function renderGrammar() {
+  const grid = document.getElementById('grammar-grid');
+  const lessons = currentGLesson === -1 ? grammarLessons : [grammarLessons[currentGLesson]];
+  grid.innerHTML = '';
+  lessons.forEach((lesson, li) => {
+    const t = document.createElement('div');
+    t.className = 'grammar-lesson-title';
+    const num = currentGLesson === -1 ? li + 1 : currentGLesson + 1;
+    t.textContent = `Lesson ${num}: ${lesson.title}`;
+    grid.appendChild(t);
+    lesson.points.forEach(p => {
+      const c = document.createElement('div');
+      c.className = 'grammar-card';
+      c.innerHTML = `
+        <div class="grammar-num">${p.n}</div>
+        <div class="grammar-tag">Grammar</div>
+        <div class="grammar-title">${p.title}</div>
+        <div class="grammar-pattern">${p.pat}</div>
+        <div class="grammar-meaning">"${p.m}"</div>
+        <div class="grammar-explanation">${p.exp}</div>
+        <div class="grammar-example">
+          <div class="jp">${p.ej}</div>
+          <div class="kana">${p.ekn}</div>
+          <div class="en">${p.ee}</div>
+        </div>`;
+      grid.appendChild(c);
+    });
+  });
+}
+
+// ═══════════════════════════ QUIZ ═══════════════════════════
+function setQuizType(t) {
+  quizType = t;
+  document.getElementById('qtype-vocab').classList.toggle('active', t === 'vocab');
+  document.getElementById('qtype-grammar').classList.toggle('active', t === 'grammar');
+}
+
+function shuffle(a) { return a.sort(() => Math.random() - 0.5); }
+
+function startQuiz() {
+  // reset UI
+  ['quiz-q-card','quiz-options'].forEach(id => document.getElementById(id).style.display = '');
+  document.getElementById('score-card').classList.remove('show');
+  document.getElementById('quiz-feedback').classList.remove('show','ok','fail');
+  document.getElementById('quiz-next').classList.remove('show');
+
+  if (quizType === 'vocab') {
+    const all = vocabLessons.flatMap(l => l.words);
+    const pool = shuffle([...all]).slice(0, 15);
+    qList = pool.map(w => {
+      const wrongs = shuffle(all.filter(x => x.m !== w.m)).slice(0, 3).map(x => x.m);
+      return { prompt: w.k, sub: w.kn, badge: w.t, isGrammar: false, answer: w.m, options: shuffle([w.m, ...wrongs]) };
+    });
+  } else {
+    const all = grammarLessons.flatMap(l => l.points);
+    const pool = shuffle([...all]).slice(0, 15);
+    qList = pool.map(g => {
+      const wrongs = shuffle(all.filter(x => x.m !== g.m)).slice(0, 3).map(x => x.m);
+      return { prompt: g.pat, sub: g.title, badge: 'Grammar', isGrammar: true, answer: g.m, options: shuffle([g.m, ...wrongs]) };
+    });
+  }
+  qIdx = 0; qScore = 0;
+  document.getElementById('quiz-area').classList.add('show');
+  renderQ();
+}
+
+function renderQ() {
+  qAnswered = false;
+  const q = qList[qIdx];
+  const total = qList.length;
+  document.getElementById('quiz-prog').style.width = `${(qIdx / total) * 100}%`;
+  document.getElementById('quiz-qnum').textContent = `Question ${qIdx + 1} of ${total}`;
+  document.getElementById('quiz-score-live').textContent = `Score: ${qScore}`;
+  document.getElementById('qlabel').textContent = q.isGrammar ? 'What does this grammar pattern mean?' : 'What does this word mean?';
+  document.getElementById('qword').textContent = q.prompt;
+  document.getElementById('qsub').textContent = q.sub;
+  const badge = document.getElementById('qbadge');
+  badge.textContent = q.badge;
+  badge.className = 'quiz-badge' + (q.isGrammar ? ' grammar' : '');
+  document.getElementById('quiz-feedback').classList.remove('show','ok','fail');
+  document.getElementById('quiz-next').classList.remove('show');
+
+  const opts = document.getElementById('quiz-options');
+  opts.innerHTML = '';
+  q.options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'quiz-opt';
+    b.textContent = opt;
+    b.onclick = () => checkAnswer(b, opt, q.answer);
+    opts.appendChild(b);
+  });
+}
+
+function checkAnswer(btn, chosen, correct) {
+  if (qAnswered) return;
+  qAnswered = true;
+  document.querySelectorAll('.quiz-opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+  const fb = document.getElementById('quiz-feedback');
+  if (chosen === correct) {
+    qScore++;
+    btn.classList.add('correct');
+    fb.textContent = '✓ Correct!';
+    fb.className = 'quiz-feedback show ok';
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = `✗ Correct answer: "${correct}"`;
+    fb.className = 'quiz-feedback show fail';
+  }
+  document.getElementById('quiz-score-live').textContent = `Score: ${qScore}`;
+  document.getElementById('quiz-next').classList.add('show');
+}
+
+function nextQ() {
+  qIdx++;
+  if (qIdx >= qList.length) showScore();
+  else renderQ();
+}
+
+function showScore() {
+  document.getElementById('quiz-q-card').style.display = 'none';
+  document.getElementById('quiz-options').style.display = 'none';
+  document.getElementById('quiz-feedback').classList.remove('show');
+  document.getElementById('quiz-next').classList.remove('show');
+  document.getElementById('quiz-prog').style.width = '100%';
+
+  const total = qList.length;
+  const pct = Math.round((qScore / total) * 100);
+  const msgs = { 90: ['🎉','Excellent!','You\'re acing N4!'], 70: ['👍','Great job!','Keep going — you\'re getting there!'], 50: ['📚','Good effort!','Review and try again.'], 0: ['💪','Keep studying!','You\'ll improve with practice.'] };
+  let [emoji, title, msg] = msgs[0];
+  for (const threshold of [90, 70, 50]) { if (pct >= threshold) { [emoji, title, msg] = msgs[threshold]; break; } }
+  document.getElementById('score-emoji').textContent = emoji;
+  document.getElementById('score-num').textContent = `${qScore} / ${total}`;
+  document.getElementById('score-pct').textContent = `${pct}% — ${title}`;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-card').classList.add('show');
+}
+
+// ═══════════════════════════ HELPERS ═══════════════════════════
+function mkBtn(label, active, fn) {
+  const b = document.createElement('button');
+  b.className = 'lesson-btn' + (active ? ' active' : '');
+  b.textContent = label;
+  b.onclick = fn;
+  return b;
+}
+
+function setActiveBtn(parent, active) {
+  parent.querySelectorAll('.lesson-btn').forEach(b => b.classList.remove('active'));
+  active.classList.add('active');
+}
+
+// ═══════════════════════════ INIT ═══════════════════════════
+buildVocabPicker();
+renderVocab();
+buildGrammarPicker();
+renderGrammar();
+</script>
+</body>
+</html>
